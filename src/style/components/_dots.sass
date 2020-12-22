@@ -1,0 +1,31 @@
+.dots
+  position: fixed
+  right: 20px
+
+  display: flex
+  flex-direction: column
+  justify-content: center
+  z-index: 1
+
+  height: 100%
+
+  &__item
+    width: 8px
+    height: 8px
+    margin: 5px
+
+    background-color: $color-dot
+    opacity: 0.6
+    border-radius: 50%
+    transition: transform 300ms, opacity 300ms
+
+    cursor: pointer
+
+    &:hover
+      transform: scale(1.6)
+      opacity: 1
+
+    &_is-active
+      background-color: $color-dot-active
+      transform: scale(2)
+      transition: transform 300ms
