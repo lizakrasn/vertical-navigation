@@ -3,22 +3,12 @@ export default class myNavigation {
     this.sections = [...document.querySelectorAll('.section')]
     this.content = document.querySelector('.sections')
 
-    this.ANIMATION_DURATION = 1000
+    this.animationDuration = 500
 
     this.spinValue = 0
     this.canScroll = true
 
     this.#subscribeToMousewheel()
-  }
-
-  goToSection = (numberOfSection) => {
-    animateScroll(numberOfSection - 1)
-  }
-
-  setSectionColors = (colors) => {
-    this.sections.forEach((section, index) => {
-      section.style.backgroundColor = colors[index]
-    })
   }
 
   addNavigation = () => {
@@ -51,6 +41,23 @@ export default class myNavigation {
     })
   };
 
+  goToSection = (numberOfSection) => {
+    animateScroll(numberOfSection - 1)
+  }
+
+  setSectionColors = (colors) => {
+    this.sections.forEach((section, index) => {
+      section.style.backgroundColor = colors[index]
+    })
+  }
+
+  setAnimationDuration = (duration) => {
+    this.animationDuration = duration
+    console.log(this.animationDuration)
+
+    this.content.style.transitionDuration = `${duration}ms`
+  }
+
   #subscribeToMousewheel = () => {
     window.addEventListener('mousewheel', (event) => {
       if(!this.canScroll) {
@@ -75,11 +82,11 @@ export default class myNavigation {
   }
 
   #animateScroll = (count) => {
-    this.content.setAttribute('style', `transform: translateY(-${count * 100}vh)`)
+    this.content.style.transform = `translateY(-${count * 100}vh)`
 
     setTimeout(() => {
       this.canScroll = true
-    }, this.ANIMATION_DURATION)
+    }, this.animationDuration)
   }
 
   #updateActiveClass = (numberOfDot) => {

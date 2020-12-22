@@ -154,16 +154,6 @@ var myNavigation = function myNavigation() {
 
   _classCallCheck(this, myNavigation);
 
-  _defineProperty(this, "goToSection", function (numberOfSection) {
-    animateScroll(numberOfSection - 1);
-  });
-
-  _defineProperty(this, "setSectionColors", function (colors) {
-    _this.sections.forEach(function (section, index) {
-      section.style.backgroundColor = colors[index];
-    });
-  });
-
   _defineProperty(this, "addNavigation", function () {
     var dotsContainer = document.querySelector('.dots');
 
@@ -188,6 +178,22 @@ var myNavigation = function myNavigation() {
         _classPrivateFieldGet(_this, _updateActiveClass).call(_this, index);
       });
     });
+  });
+
+  _defineProperty(this, "goToSection", function (numberOfSection) {
+    animateScroll(numberOfSection - 1);
+  });
+
+  _defineProperty(this, "setSectionColors", function (colors) {
+    _this.sections.forEach(function (section, index) {
+      section.style.backgroundColor = colors[index];
+    });
+  });
+
+  _defineProperty(this, "setAnimationDuration", function (duration) {
+    _this.animationDuration = duration;
+    console.log(_this.animationDuration);
+    _this.content.style.transitionDuration = "".concat(duration, "ms");
   });
 
   _subscribeToMousewheel.set(this, {
@@ -220,11 +226,10 @@ var myNavigation = function myNavigation() {
   _animateScroll.set(this, {
     writable: true,
     value: function value(count) {
-      _this.content.setAttribute('style', "transform: translateY(-".concat(count * 100, "vh)"));
-
+      _this.content.style.transform = "translateY(-".concat(count * 100, "vh)");
       setTimeout(function () {
         _this.canScroll = true;
-      }, _this.ANIMATION_DURATION);
+      }, _this.animationDuration);
     }
   });
 
@@ -242,7 +247,7 @@ var myNavigation = function myNavigation() {
 
   this.sections = _toConsumableArray(document.querySelectorAll('.section'));
   this.content = document.querySelector('.sections');
-  this.ANIMATION_DURATION = 1000;
+  this.animationDuration = 500;
   this.spinValue = 0;
   this.canScroll = true;
 
@@ -260,6 +265,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var myVerticalNavigation = new _myNavigation.default();
 myVerticalNavigation.addNavigation();
 myVerticalNavigation.setSectionColors(['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1']);
+myVerticalNavigation.setAnimationDuration(1000);
 },{"./scripts/myNavigation":"scripts/myNavigation.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -288,7 +294,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52046" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53086" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
