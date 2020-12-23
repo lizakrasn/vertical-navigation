@@ -301,7 +301,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mySlider = new _myNavigation.default();
 mySlider.addNavigation();
 mySlider.setSectionColors(['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1']);
-mySlider.setAnimationDuration(1000); // mySlider.goToSection(3)
+mySlider.setAnimationDuration(1000);
+mySlider.goToSection(1);
 
 var addPopUp = function addPopUp() {
   var popUp = document.createElement('div');
@@ -342,7 +343,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60465" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60872" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
