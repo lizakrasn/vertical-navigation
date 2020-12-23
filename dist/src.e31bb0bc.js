@@ -240,7 +240,6 @@ var myNavigation = /*#__PURE__*/function () {
         });
 
         _this.spinValue = count;
-        console.log('count', count, 'spin', _this.spinValue);
         _this.content.style.transform = "translateY(-".concat(count * 100, "vh)");
         setTimeout(function () {
           _this.canScroll = true;
@@ -345,7 +344,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56046" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65211" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

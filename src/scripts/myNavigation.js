@@ -105,7 +105,6 @@ export default class myNavigation {
 
    
     this.spinValue = count
-    console.log('count',count, 'spin', this.spinValue)
     this.content.style.transform = `translateY(-${count * 100}vh)`
 
     setTimeout(() => {
