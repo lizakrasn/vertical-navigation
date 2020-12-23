@@ -6,7 +6,7 @@ export default class myNavigation {
 
     this.animationDuration = 500
 
-    this.spinValue = 0
+    this.activeSectionIndex = 0
     this.canScroll = true
 
     this.onScrollCallbacks = {
@@ -76,7 +76,7 @@ export default class myNavigation {
   }
 
   #subscribeToMousewheel = () => {
-    window.addEventListener('mousewheel', (event) => {
+    window.addEventListener('wheel', (event) => {
       if(!this.canScroll) {
         return
       }
@@ -84,17 +84,17 @@ export default class myNavigation {
       this.canScroll = false
 
       if (event.deltaY > 0) {
-        if(this.spinValue < this.sections.length -1) {
-          this.spinValue += 1;
+        if(this.activeSectionIndex < this.sections.length -1) {
+          this.activeSectionIndex += 1;
         }
       } else {
-        if(this.spinValue > 0) {
-          this.spinValue -= 1;
+        if(this.activeSectionIndex > 0) {
+          this.activeSectionIndex -= 1;
         }
       }
 
-      this.#animateScroll(this.spinValue)
-      this.#updateActiveClass(this.spinValue)
+      this.#animateScroll(this.activeSectionIndex)
+      this.#updateActiveClass(this.activeSectionIndex)
     })
   }
 
@@ -104,7 +104,7 @@ export default class myNavigation {
     })
 
    
-    this.spinValue = count
+    this.activeSectionIndex = count
     this.content.style.transform = `translateY(-${count * 100}vh)`
 
     setTimeout(() => {
