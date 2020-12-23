@@ -45,7 +45,6 @@ export default class myNavigation {
         event.preventDefault()
 
         this.#animateScroll(index)
-
         this.#updateActiveClass(index)
       })
     })
@@ -104,6 +103,9 @@ export default class myNavigation {
       callback()
     })
 
+   
+    this.spinValue = count
+    console.log('count',count, 'spin', this.spinValue)
     this.content.style.transform = `translateY(-${count * 100}vh)`
 
     setTimeout(() => {
@@ -115,10 +117,10 @@ export default class myNavigation {
     }, this.animationDuration)
   }
 
-  #updateActiveClass = (numberOfDot) => {
+  #updateActiveClass = (numberOfSection) => {
     const dots = [...document.querySelectorAll('.dots__item')]
 
     dots.forEach((dot) => dot.classList.remove('dots__item_is-active'))
-    dots[numberOfDot].classList.add('dots__item_is-active')
+    dots[numberOfSection].classList.add('dots__item_is-active')
   }
 }
