@@ -1,5 +1,6 @@
-export default class myNavigation {
+export default class MyNavigation {
   constructor(){
+    this.body = document.querySelector('.fullscreen')
     this.sections = [...document.querySelectorAll('.section')]
     this.content = document.querySelector('.sections')
 
@@ -17,7 +18,11 @@ export default class myNavigation {
   }
 
   addNavigation = () => {
-    const dotsContainer = document.querySelector('.dots')
+    const dotsContainer = document.createElement('div')
+
+    dotsContainer.classList.add('dots')
+
+    this.body.append(dotsContainer)
 
     this.sections.forEach(() => {
 

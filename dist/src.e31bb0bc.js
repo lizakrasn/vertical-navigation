@@ -153,14 +153,17 @@ var _animateScroll = new WeakMap();
 
 var _updateActiveClass = new WeakMap();
 
-var myNavigation = /*#__PURE__*/function () {
-  function myNavigation() {
+var MyNavigation = /*#__PURE__*/function () {
+  function MyNavigation() {
     var _this = this;
 
-    _classCallCheck(this, myNavigation);
+    _classCallCheck(this, MyNavigation);
 
     _defineProperty(this, "addNavigation", function () {
-      var dotsContainer = document.querySelector('.dots');
+      var dotsContainer = document.createElement('div');
+      dotsContainer.classList.add('dots');
+
+      _this.body.append(dotsContainer);
 
       _this.sections.forEach(function () {
         var dot = document.createElement('a');
@@ -257,6 +260,7 @@ var myNavigation = /*#__PURE__*/function () {
       }
     });
 
+    this.body = document.querySelector('.fullscreen');
     this.sections = _toConsumableArray(document.querySelectorAll('.section'));
     this.content = document.querySelector('.sections');
     this.animationDuration = 500;
@@ -270,7 +274,7 @@ var myNavigation = /*#__PURE__*/function () {
     _classPrivateFieldGet(this, _subscribeToMousewheel).call(this);
   }
 
-  _createClass(myNavigation, [{
+  _createClass(MyNavigation, [{
     key: "onScroll",
     value: function onScroll(event, callback) {
       if (event === 'start') {
@@ -281,10 +285,10 @@ var myNavigation = /*#__PURE__*/function () {
     }
   }]);
 
-  return myNavigation;
+  return MyNavigation;
 }();
 
-exports.default = myNavigation;
+exports.default = MyNavigation;
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -336,7 +340,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56903" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58764" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

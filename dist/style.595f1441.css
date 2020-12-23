@@ -1,9 +1,9 @@
 body {
-  height: 100vh;
-  box-sizing: border-box;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
+  height: 100vh;
   font-family: "Times New Roman", Times, serif;
+  box-sizing: border-box;
 }
 
 html,
@@ -14,10 +14,10 @@ h1 {
 }
 
 .sections {
-  width: 100%;
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
   transition: transform;
   transition-timing-function: ease-in-out;
 }
@@ -37,25 +37,25 @@ h1 {
 .dots {
   position: fixed;
   right: 20px;
+  z-index: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  z-index: 1;
-  height: 100%;
 }
 .dots__item {
   width: 8px;
   height: 8px;
   margin: 5px;
   background-color: #414449;
-  opacity: 0.6;
   border-radius: 50%;
+  opacity: 0.6;
   transition: transform 300ms, opacity 300ms;
   cursor: pointer;
 }
 .dots__item:hover {
-  transform: scale(1.6);
   opacity: 1;
+  transform: scale(1.6);
 }
 .dots__item_is-active {
   background-color: red;
@@ -70,12 +70,12 @@ h1 {
   z-index: 2;
   width: 200px;
   height: 200px;
-  border: 5px solid grey;
-  border-radius: 20px;
   background-color: white;
   background-image: url("/popUp.16a60378.jpg");
   background-size: contain;
   background-repeat: no-repeat;
+  border: 5px solid grey;
+  border-radius: 20px;
 }
 
 /*# sourceMappingURL=/style.595f1441.css.map */
