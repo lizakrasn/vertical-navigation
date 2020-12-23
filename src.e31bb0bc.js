@@ -208,7 +208,7 @@ var myNavigation = /*#__PURE__*/function () {
     _subscribeToMousewheel.set(this, {
       writable: true,
       value: function value() {
-        window.addEventListener('mousewheel', function (event) {
+        window.addEventListener('wheel', function (event) {
           if (!_this.canScroll) {
             return;
           }
@@ -216,18 +216,18 @@ var myNavigation = /*#__PURE__*/function () {
           _this.canScroll = false;
 
           if (event.deltaY > 0) {
-            if (_this.spinValue < _this.sections.length - 1) {
-              _this.spinValue += 1;
+            if (_this.activeSectionIndex < _this.sections.length - 1) {
+              _this.activeSectionIndex += 1;
             }
           } else {
-            if (_this.spinValue > 0) {
-              _this.spinValue -= 1;
+            if (_this.activeSectionIndex > 0) {
+              _this.activeSectionIndex -= 1;
             }
           }
 
-          _classPrivateFieldGet(_this, _animateScroll).call(_this, _this.spinValue);
+          _classPrivateFieldGet(_this, _animateScroll).call(_this, _this.activeSectionIndex);
 
-          _classPrivateFieldGet(_this, _updateActiveClass).call(_this, _this.spinValue);
+          _classPrivateFieldGet(_this, _updateActiveClass).call(_this, _this.activeSectionIndex);
         });
       }
     });
@@ -239,7 +239,7 @@ var myNavigation = /*#__PURE__*/function () {
           callback();
         });
 
-        _this.spinValue = count;
+        _this.activeSectionIndex = count;
         _this.content.style.transform = "translateY(-".concat(count * 100, "vh)");
         setTimeout(function () {
           _this.canScroll = true;
@@ -267,7 +267,7 @@ var myNavigation = /*#__PURE__*/function () {
     this.sections = _toConsumableArray(document.querySelectorAll('.section'));
     this.content = document.querySelector('.sections');
     this.animationDuration = 500;
-    this.spinValue = 0;
+    this.activeSectionIndex = 0;
     this.canScroll = true;
     this.onScrollCallbacks = {
       'end': [],
@@ -344,7 +344,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65211" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50794" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
