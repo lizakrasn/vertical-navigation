@@ -1,4 +1,4 @@
-export default class MyNavigation {
+export default class myNavigation {
   constructor(){
     this.body = document.querySelector('.fullscreen')
     this.sections = [...document.querySelectorAll('.section')]
@@ -52,7 +52,8 @@ export default class MyNavigation {
   };
 
   goToSection = (numberOfSection) => {
-    animateScroll(numberOfSection - 1)
+    this.#animateScroll(numberOfSection - 1)
+    this.#updateActiveClass(numberOfSection - 1)
   }
 
   setSectionColors = (colors) => {

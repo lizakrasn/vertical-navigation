@@ -153,11 +153,11 @@ var _animateScroll = new WeakMap();
 
 var _updateActiveClass = new WeakMap();
 
-var MyNavigation = /*#__PURE__*/function () {
-  function MyNavigation() {
+var myNavigation = /*#__PURE__*/function () {
+  function myNavigation() {
     var _this = this;
 
-    _classCallCheck(this, MyNavigation);
+    _classCallCheck(this, myNavigation);
 
     _defineProperty(this, "addNavigation", function () {
       var dotsContainer = document.createElement('div');
@@ -189,7 +189,9 @@ var MyNavigation = /*#__PURE__*/function () {
     });
 
     _defineProperty(this, "goToSection", function (numberOfSection) {
-      animateScroll(numberOfSection - 1);
+      _classPrivateFieldGet(_this, _animateScroll).call(_this, numberOfSection - 1);
+
+      _classPrivateFieldGet(_this, _updateActiveClass).call(_this, numberOfSection - 1);
     });
 
     _defineProperty(this, "setSectionColors", function (colors) {
@@ -274,7 +276,7 @@ var MyNavigation = /*#__PURE__*/function () {
     _classPrivateFieldGet(this, _subscribeToMousewheel).call(this);
   }
 
-  _createClass(MyNavigation, [{
+  _createClass(myNavigation, [{
     key: "onScroll",
     value: function onScroll(event, callback) {
       if (event === 'start') {
@@ -285,10 +287,10 @@ var MyNavigation = /*#__PURE__*/function () {
     }
   }]);
 
-  return MyNavigation;
+  return myNavigation;
 }();
 
-exports.default = MyNavigation;
+exports.default = myNavigation;
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -299,7 +301,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mySlider = new _myNavigation.default();
 mySlider.addNavigation();
 mySlider.setSectionColors(['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1']);
-mySlider.setAnimationDuration(1000);
+mySlider.setAnimationDuration(1000); // mySlider.goToSection(3)
 
 var addPopUp = function addPopUp() {
   var popUp = document.createElement('div');
@@ -340,7 +342,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58764" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60465" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
