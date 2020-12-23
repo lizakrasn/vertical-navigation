@@ -139,6 +139,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
@@ -149,110 +153,139 @@ var _animateScroll = new WeakMap();
 
 var _updateActiveClass = new WeakMap();
 
-var myNavigation = function myNavigation() {
-  var _this = this;
+var myNavigation = /*#__PURE__*/function () {
+  function myNavigation() {
+    var _this = this;
 
-  _classCallCheck(this, myNavigation);
+    _classCallCheck(this, myNavigation);
 
-  _defineProperty(this, "addNavigation", function () {
-    var dotsContainer = document.querySelector('.dots');
+    _defineProperty(this, "addNavigation", function () {
+      var dotsContainer = document.querySelector('.dots');
 
-    _this.sections.forEach(function () {
-      var dot = document.createElement('a');
-      dot.classList.add('dots__item');
-      dotsContainer.append(dot);
-    });
-
-    var dots = _toConsumableArray(document.querySelectorAll('.dots__item'));
-
-    dots.forEach(function (dot, index) {
-      if (index === 0) {
-        dot.classList.add('dots__item_is-active');
-      }
-
-      dot.addEventListener('click', function (event) {
-        event.preventDefault();
-
-        _classPrivateFieldGet(_this, _animateScroll).call(_this, index);
-
-        _classPrivateFieldGet(_this, _updateActiveClass).call(_this, index);
+      _this.sections.forEach(function () {
+        var dot = document.createElement('a');
+        dot.classList.add('dots__item');
+        dotsContainer.append(dot);
       });
-    });
-  });
 
-  _defineProperty(this, "goToSection", function (numberOfSection) {
-    animateScroll(numberOfSection - 1);
-  });
-
-  _defineProperty(this, "setSectionColors", function (colors) {
-    _this.sections.forEach(function (section, index) {
-      section.style.backgroundColor = colors[index];
-    });
-  });
-
-  _defineProperty(this, "setAnimationDuration", function (duration) {
-    _this.animationDuration = duration;
-    console.log(_this.animationDuration);
-    _this.content.style.transitionDuration = "".concat(duration, "ms");
-  });
-
-  _subscribeToMousewheel.set(this, {
-    writable: true,
-    value: function value() {
-      window.addEventListener('mousewheel', function (event) {
-        if (!_this.canScroll) {
-          return;
-        }
-
-        _this.canScroll = false;
-
-        if (event.deltaY > 0) {
-          if (_this.spinValue < _this.sections.length - 1) {
-            _this.spinValue += 1;
-          }
-        } else {
-          if (_this.spinValue > 0) {
-            _this.spinValue -= 1;
-          }
-        }
-
-        _classPrivateFieldGet(_this, _animateScroll).call(_this, _this.spinValue);
-
-        _classPrivateFieldGet(_this, _updateActiveClass).call(_this, _this.spinValue);
-      });
-    }
-  });
-
-  _animateScroll.set(this, {
-    writable: true,
-    value: function value(count) {
-      _this.content.style.transform = "translateY(-".concat(count * 100, "vh)");
-      setTimeout(function () {
-        _this.canScroll = true;
-      }, _this.animationDuration);
-    }
-  });
-
-  _updateActiveClass.set(this, {
-    writable: true,
-    value: function value(numberOfDot) {
       var dots = _toConsumableArray(document.querySelectorAll('.dots__item'));
 
-      dots.forEach(function (dot) {
-        return dot.classList.remove('dots__item_is-active');
+      dots.forEach(function (dot, index) {
+        if (index === 0) {
+          dot.classList.add('dots__item_is-active');
+        }
+
+        dot.addEventListener('click', function (event) {
+          event.preventDefault();
+
+          _classPrivateFieldGet(_this, _animateScroll).call(_this, index);
+
+          _classPrivateFieldGet(_this, _updateActiveClass).call(_this, index);
+        });
       });
-      dots[numberOfDot].classList.add('dots__item_is-active');
+    });
+
+    _defineProperty(this, "goToSection", function (numberOfSection) {
+      animateScroll(numberOfSection - 1);
+    });
+
+    _defineProperty(this, "setSectionColors", function (colors) {
+      _this.sections.forEach(function (section, index) {
+        section.style.backgroundColor = colors[index];
+      });
+    });
+
+    _defineProperty(this, "setAnimationDuration", function (duration) {
+      _this.animationDuration = duration;
+      _this.content.style.transitionDuration = "".concat(duration, "ms");
+    });
+
+    _subscribeToMousewheel.set(this, {
+      writable: true,
+      value: function value() {
+        window.addEventListener('mousewheel', function (event) {
+          if (!_this.canScroll) {
+            return;
+          }
+
+          _this.canScroll = false;
+
+          if (event.deltaY > 0) {
+            if (_this.spinValue < _this.sections.length - 1) {
+              _this.spinValue += 1;
+            }
+          } else {
+            if (_this.spinValue > 0) {
+              _this.spinValue -= 1;
+            }
+          }
+
+          _classPrivateFieldGet(_this, _animateScroll).call(_this, _this.spinValue);
+
+          _classPrivateFieldGet(_this, _updateActiveClass).call(_this, _this.spinValue);
+        });
+      }
+    });
+
+    _animateScroll.set(this, {
+      writable: true,
+      value: function value(count) {
+        _this.onScrollCallbacks.start.forEach(function (callback) {
+          callback();
+        });
+
+        _this.content.style.transform = "translateY(-".concat(count * 100, "vh)");
+        setTimeout(function () {
+          _this.canScroll = true;
+
+          _this.onScrollCallbacks.end.forEach(function (callback) {
+            callback();
+          });
+        }, _this.animationDuration);
+      }
+    });
+
+    _updateActiveClass.set(this, {
+      writable: true,
+      value: function value(numberOfDot) {
+        var dots = _toConsumableArray(document.querySelectorAll('.dots__item'));
+
+        dots.forEach(function (dot) {
+          return dot.classList.remove('dots__item_is-active');
+        });
+        dots[numberOfDot].classList.add('dots__item_is-active');
+      }
+    });
+
+    this.sections = _toConsumableArray(document.querySelectorAll('.section'));
+    this.content = document.querySelector('.sections');
+    this.animationDuration = 500;
+    this.spinValue = 0;
+    this.canScroll = true;
+    this.onScrollCallbacks = {
+      'end': [],
+      'start': []
+    };
+
+    _classPrivateFieldGet(this, _subscribeToMousewheel).call(this);
+  }
+
+  _createClass(myNavigation, [{
+    key: "onScrollStart",
+    value: function onScrollStart(callback) {
+      console.log('start');
+      this.onScrollCallbacks.start.push(callback);
     }
-  });
+  }, {
+    key: "onScrollEnd",
+    value: function onScrollEnd(callback) {
+      console.log('end');
+      this.onScrollCallbacks.end.push(callback);
+    }
+  }]);
 
-  this.sections = _toConsumableArray(document.querySelectorAll('.section'));
-  this.content = document.querySelector('.sections');
-  this.animationDuration = 500;
-  this.spinValue = 0;
-  this.canScroll = true;
-
-  _classPrivateFieldGet(this, _subscribeToMousewheel).call(this);
-};
+  return myNavigation;
+}();
 
 exports.default = myNavigation;
 },{}],"index.js":[function(require,module,exports) {
@@ -266,6 +299,18 @@ var myVerticalNavigation = new _myNavigation.default();
 myVerticalNavigation.addNavigation();
 myVerticalNavigation.setSectionColors(['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1']);
 myVerticalNavigation.setAnimationDuration(1000);
+
+var addPopUp = function addPopUp() {
+  var popUp = document.createElement('div');
+  var container = document.querySelector('.fullscreen');
+  popUp.classList.add('popUp');
+  container.append(popUp);
+  setTimeout(function () {
+    popUp.remove();
+  }, 1000);
+};
+
+myVerticalNavigation.onScrollStart(addPopUp);
 },{"./scripts/myNavigation":"scripts/myNavigation.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -294,7 +339,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53086" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56903" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

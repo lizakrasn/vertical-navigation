@@ -8,6 +8,11 @@ export default class myNavigation {
     this.spinValue = 0
     this.canScroll = true
 
+    this.onScrollCallbacks = {
+      'end': [],
+      'start': []
+    }
+
     this.#subscribeToMousewheel()
   }
 
@@ -53,9 +58,18 @@ export default class myNavigation {
 
   setAnimationDuration = (duration) => {
     this.animationDuration = duration
-    console.log(this.animationDuration)
 
     this.content.style.transitionDuration = `${duration}ms`
+  }
+
+  onScrollStart(callback) {
+    console.log('start')
+    this.onScrollCallbacks.start.push(callback)
+  }
+
+  onScrollEnd(callback) {
+    console.log('end')
+    this.onScrollCallbacks.end.push(callback)
   }
 
   #subscribeToMousewheel = () => {
@@ -82,10 +96,18 @@ export default class myNavigation {
   }
 
   #animateScroll = (count) => {
+    this.onScrollCallbacks.start.forEach(callback => {
+      callback()
+    })
+
     this.content.style.transform = `translateY(-${count * 100}vh)`
 
     setTimeout(() => {
       this.canScroll = true
+
+      this.onScrollCallbacks.end.forEach(callback => {
+        callback()
+      })
     }, this.animationDuration)
   }
 
