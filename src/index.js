@@ -1,10 +1,10 @@
 import myNavigation from './scripts/myNavigation'
 
-const myVerticalNavigation = new myNavigation()
+const mySlider = new myNavigation()
 
-myVerticalNavigation.addNavigation()
-myVerticalNavigation.setSectionColors(['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1'])
-myVerticalNavigation.setAnimationDuration(1000)
+mySlider.addNavigation()
+mySlider.setSectionColors(['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1'])
+mySlider.setAnimationDuration(1000)
 
 const addPopUp = () => {
   const popUp = document.createElement('div')
@@ -18,4 +18,4 @@ const addPopUp = () => {
   }, 1000)
 }
 
-myVerticalNavigation.onScrollStart(addPopUp)
+mySlider.onScroll('start', addPopUp)

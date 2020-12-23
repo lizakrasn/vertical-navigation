@@ -62,14 +62,12 @@ export default class myNavigation {
     this.content.style.transitionDuration = `${duration}ms`
   }
 
-  onScrollStart(callback) {
-    console.log('start')
-    this.onScrollCallbacks.start.push(callback)
-  }
-
-  onScrollEnd(callback) {
-    console.log('end')
-    this.onScrollCallbacks.end.push(callback)
+  onScroll(event, callback) {
+    if(event === 'start') {
+      this.onScrollCallbacks.start.push(callback)
+    } else if(event === 'end') {
+      this.onScrollCallbacks.end.push(callback)
+    }
   }
 
   #subscribeToMousewheel = () => {

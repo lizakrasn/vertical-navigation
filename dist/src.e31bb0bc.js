@@ -271,16 +271,13 @@ var myNavigation = /*#__PURE__*/function () {
   }
 
   _createClass(myNavigation, [{
-    key: "onScrollStart",
-    value: function onScrollStart(callback) {
-      console.log('start');
-      this.onScrollCallbacks.start.push(callback);
-    }
-  }, {
-    key: "onScrollEnd",
-    value: function onScrollEnd(callback) {
-      console.log('end');
-      this.onScrollCallbacks.end.push(callback);
+    key: "onScroll",
+    value: function onScroll(event, callback) {
+      if (event === 'start') {
+        this.onScrollCallbacks.start.push(callback);
+      } else if (event === 'end') {
+        this.onScrollCallbacks.end.push(callback);
+      }
     }
   }]);
 
@@ -295,10 +292,10 @@ var _myNavigation = _interopRequireDefault(require("./scripts/myNavigation"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var myVerticalNavigation = new _myNavigation.default();
-myVerticalNavigation.addNavigation();
-myVerticalNavigation.setSectionColors(['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1']);
-myVerticalNavigation.setAnimationDuration(1000);
+var mySlider = new _myNavigation.default();
+mySlider.addNavigation();
+mySlider.setSectionColors(['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1']);
+mySlider.setAnimationDuration(1000);
 
 var addPopUp = function addPopUp() {
   var popUp = document.createElement('div');
@@ -310,7 +307,7 @@ var addPopUp = function addPopUp() {
   }, 1000);
 };
 
-myVerticalNavigation.onScrollStart(addPopUp);
+mySlider.onScroll('start', addPopUp);
 },{"./scripts/myNavigation":"scripts/myNavigation.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
