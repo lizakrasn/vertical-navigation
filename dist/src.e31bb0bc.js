@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"scripts/myNavigation.js":[function(require,module,exports) {
+})({"scripts/Slider.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -153,11 +153,18 @@ var _animateScroll = new WeakMap();
 
 var _updateActiveClass = new WeakMap();
 
-var myNavigation = /*#__PURE__*/function () {
-  function myNavigation() {
+var Slider = /*#__PURE__*/function () {
+  function Slider(_ref) {
     var _this = this;
 
-    _classCallCheck(this, myNavigation);
+    var body = _ref.body,
+        sections = _ref.sections,
+        content = _ref.content,
+        _duration = _ref.duration,
+        addNavigation = _ref.addNavigation,
+        sectionColors = _ref.sectionColors;
+
+    _classCallCheck(this, Slider);
 
     _defineProperty(this, "addNavigation", function () {
       var dotsContainer = document.createElement('div');
@@ -235,18 +242,18 @@ var myNavigation = /*#__PURE__*/function () {
     _animateScroll.set(this, {
       writable: true,
       value: function value(count) {
-        _this.onScrollCallbacks.start.forEach(function (callback) {
-          callback();
-        });
+        if (_this.onScrollCallbacks.start) {
+          _this.onScrollCallbacks.start();
+        }
 
         _this.activeSectionIndex = count;
         _this.content.style.transform = "translateY(-".concat(count * 100, "vh)");
         setTimeout(function () {
           _this.canScroll = true;
 
-          _this.onScrollCallbacks.end.forEach(function (callback) {
-            callback();
-          });
+          if (_this.onScrollCallbacks.end) {
+            _this.onScrollCallbacks.end();
+          }
         }, _this.animationDuration);
       }
     });
@@ -263,47 +270,65 @@ var myNavigation = /*#__PURE__*/function () {
       }
     });
 
-    this.body = document.querySelector('.fullscreen');
-    this.sections = _toConsumableArray(document.querySelectorAll('.section'));
-    this.content = document.querySelector('.sections');
-    this.animationDuration = 500;
+    this.body = body;
+    this.sections = sections;
+    this.content = content;
+    this.animationDuration = _duration || 1000;
+    this.navigation = addNavigation || false;
+    this.colors = sectionColors || [];
     this.activeSectionIndex = 0;
     this.canScroll = true;
     this.onScrollCallbacks = {
-      'end': [],
-      'start': []
+      'end': null,
+      'start': null
     };
 
     _classPrivateFieldGet(this, _subscribeToMousewheel).call(this);
+
+    this.addNavigation(this.navigation);
+    this.setAnimationDuration(this.animationDuration);
+    this.setSectionColors(this.colors);
   }
 
-  _createClass(myNavigation, [{
+  _createClass(Slider, [{
     key: "onScroll",
     value: function onScroll(event, callback) {
-      if (event === 'start') {
-        this.onScrollCallbacks.start.push(callback);
-      } else if (event === 'end') {
-        this.onScrollCallbacks.end.push(callback);
-      }
+      this.onScrollCallbacks[event] = callback;
     }
   }]);
 
-  return myNavigation;
+  return Slider;
 }();
 
-exports.default = myNavigation;
+exports.default = Slider;
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
-var _myNavigation = _interopRequireDefault(require("./scripts/myNavigation"));
+var _Slider = _interopRequireDefault(require("./scripts/Slider"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mySlider = new _myNavigation.default();
-mySlider.addNavigation();
-mySlider.setSectionColors(['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1']);
-mySlider.setAnimationDuration(1000);
-mySlider.goToSection(1);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+var slider = new _Slider.default({
+  body: document.querySelector('.fullscreen'),
+  sections: _toConsumableArray(document.querySelectorAll('.section')),
+  content: document.querySelector('.sections'),
+  addNavigation: true,
+  duration: 1000,
+  sectionColors: ['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1']
+});
+slider.goToSection(1);
 
 var addPopUp = function addPopUp() {
   var popUp = document.createElement('div');
@@ -315,8 +340,8 @@ var addPopUp = function addPopUp() {
   }, 1000);
 };
 
-mySlider.onScroll('start', addPopUp);
-},{"./scripts/myNavigation":"scripts/myNavigation.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+slider.onScroll('start', addPopUp);
+},{"./scripts/Slider":"scripts/Slider.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -344,7 +369,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50794" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58645" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

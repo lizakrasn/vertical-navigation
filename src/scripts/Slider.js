@@ -1,20 +1,32 @@
-export default class myNavigation {
-  constructor(){
-    this.body = document.querySelector('.fullscreen')
-    this.sections = [...document.querySelectorAll('.section')]
-    this.content = document.querySelector('.sections')
+export default class Slider {
+  constructor({
+    body,
+    sections,
+    content,
+    duration,
+    addNavigation,
+    sectionColors
+  }){
+    this.body = body
+    this.sections = sections
+    this.content = content
 
-    this.animationDuration = 500
+    this.animationDuration = duration || 1000
+    this.navigation = addNavigation || false
+    this.colors = sectionColors || []
 
     this.activeSectionIndex = 0
     this.canScroll = true
 
     this.onScrollCallbacks = {
-      'end': [],
-      'start': []
+      'end': null,
+      'start': null
     }
 
     this.#subscribeToMousewheel()
+    this.addNavigation(this.navigation)
+    this.setAnimationDuration(this.animationDuration)
+    this.setSectionColors(this.colors)
   }
 
   addNavigation = () => {
@@ -68,11 +80,7 @@ export default class myNavigation {
   }
 
   onScroll(event, callback) {
-    if(event === 'start') {
-      this.onScrollCallbacks.start.push(callback)
-    } else if(event === 'end') {
-      this.onScrollCallbacks.end.push(callback)
-    }
+    this.onScrollCallbacks[event] = callback
   }
 
   #subscribeToMousewheel = () => {
@@ -99,20 +107,19 @@ export default class myNavigation {
   }
 
   #animateScroll = (count) => {
-    this.onScrollCallbacks.start.forEach(callback => {
-      callback()
-    })
+    if (this.onScrollCallbacks.start) {
+      this.onScrollCallbacks.start()
+    }
 
-   
     this.activeSectionIndex = count
     this.content.style.transform = `translateY(-${count * 100}vh)`
 
     setTimeout(() => {
       this.canScroll = true
 
-      this.onScrollCallbacks.end.forEach(callback => {
-        callback()
-      })
+      if (this.onScrollCallbacks.end) {
+        this.onScrollCallbacks.end()
+      }
     }, this.animationDuration)
   }
 

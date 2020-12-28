@@ -1,11 +1,15 @@
-import myNavigation from './scripts/myNavigation'
+import Slider from './scripts/Slider'
 
-const mySlider = new myNavigation()
+const slider = new Slider({
+  body: document.querySelector('.fullscreen'),
+  sections: [...document.querySelectorAll('.section')],
+  content: document.querySelector('.sections'),
+  addNavigation: true,
+  duration: 1000,
+  sectionColors: ['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1'],
+})
 
-mySlider.addNavigation()
-mySlider.setSectionColors(['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1'])
-mySlider.setAnimationDuration(1000)
-mySlider.goToSection(1)
+slider.goToSection(1)
 
 const addPopUp = () => {
   const popUp = document.createElement('div')
@@ -19,4 +23,4 @@ const addPopUp = () => {
   }, 1000)
 }
 
-mySlider.onScroll('start', addPopUp)
+slider.onScroll('start', addPopUp)
