@@ -212,29 +212,45 @@ var Slider = /*#__PURE__*/function () {
       _this.content.style.transitionDuration = "".concat(duration, "ms");
     });
 
+    _defineProperty(this, "wheelEvent", function (event) {
+      var curTime = new Date().getTime();
+      var timeDiff = curTime - _this.prevTime;
+      _this.prevTime = curTime;
+      console.log(curTime, _this.prevTime, timeDiff);
+
+      if (timeDiff < 300) {
+        event.preventDefault();
+        return;
+      }
+
+      console.log('called wheel event', _this.canScroll);
+
+      if (!_this.canScroll) {
+        return;
+      }
+
+      _this.canScroll = false;
+
+      if (event.deltaY > 0) {
+        if (_this.activeSectionIndex < _this.sections.length - 1) {
+          _this.activeSectionIndex += 1;
+        }
+      } else {
+        if (_this.activeSectionIndex > 0) {
+          _this.activeSectionIndex -= 1;
+        }
+      }
+
+      _classPrivateFieldGet(_this, _animateScroll).call(_this, _this.activeSectionIndex);
+
+      _classPrivateFieldGet(_this, _updateActiveClass).call(_this, _this.activeSectionIndex);
+    });
+
     _subscribeToMousewheel.set(this, {
       writable: true,
       value: function value() {
         window.addEventListener('wheel', function (event) {
-          if (!_this.canScroll) {
-            return;
-          }
-
-          _this.canScroll = false;
-
-          if (event.deltaY > 0) {
-            if (_this.activeSectionIndex < _this.sections.length - 1) {
-              _this.activeSectionIndex += 1;
-            }
-          } else {
-            if (_this.activeSectionIndex > 0) {
-              _this.activeSectionIndex -= 1;
-            }
-          }
-
-          _classPrivateFieldGet(_this, _animateScroll).call(_this, _this.activeSectionIndex);
-
-          _classPrivateFieldGet(_this, _updateActiveClass).call(_this, _this.activeSectionIndex);
+          return _this.wheelEvent(event);
         });
       }
     });
@@ -248,8 +264,10 @@ var Slider = /*#__PURE__*/function () {
 
         _this.activeSectionIndex = count;
         _this.content.style.transform = "translateY(-".concat(count * 100, "vh)");
+        console.log('start animate', _this.canScroll);
         setTimeout(function () {
           _this.canScroll = true;
+          console.log('end setTimeout', _this.canScroll);
 
           if (_this.onScrollCallbacks.end) {
             _this.onScrollCallbacks.end();
@@ -270,6 +288,20 @@ var Slider = /*#__PURE__*/function () {
       }
     });
 
+    _defineProperty(this, "resetTransform", function () {
+      setTimeout(function () {
+        _this.content.style.transitionDuration = null;
+        _this.content.style.transform = "translateY(-".concat(_this.sections.length * 100, "vh)");
+        setTimeout(function () {
+          _this.content.style.transitionDuration = null;
+          _this.content.style.transform = 'translateY(0)';
+          setTimeout(function () {
+            _this.setAnimationDuration(_this.animationDuration);
+          }, 30);
+        }, 30);
+      }, 30);
+    });
+
     this.body = body;
     this.sections = sections;
     this.content = content;
@@ -278,16 +310,18 @@ var Slider = /*#__PURE__*/function () {
     this.colors = sectionColors || [];
     this.activeSectionIndex = 0;
     this.canScroll = true;
+    this.prevTime = new Date().getTime();
     this.onScrollCallbacks = {
       'end': null,
       'start': null
     };
-
-    _classPrivateFieldGet(this, _subscribeToMousewheel).call(this);
-
     this.addNavigation(this.navigation);
     this.setAnimationDuration(this.animationDuration);
     this.setSectionColors(this.colors);
+
+    _classPrivateFieldGet(this, _subscribeToMousewheel).call(this);
+
+    this.resetTransform();
   }
 
   _createClass(Slider, [{
@@ -327,8 +361,7 @@ var slider = new _Slider.default({
   addNavigation: true,
   duration: 1000,
   sectionColors: ['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1']
-});
-slider.goToSection(1);
+}); // slider.goToSection(1)
 
 var addPopUp = function addPopUp() {
   var popUp = document.createElement('div');
@@ -369,7 +402,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58645" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51102" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

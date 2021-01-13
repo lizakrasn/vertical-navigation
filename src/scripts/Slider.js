@@ -17,16 +17,19 @@ export default class Slider {
 
     this.activeSectionIndex = 0
     this.canScroll = true
+    this.prevTime = new Date().getTime();
 
     this.onScrollCallbacks = {
       'end': null,
       'start': null
     }
 
-    this.#subscribeToMousewheel()
     this.addNavigation(this.navigation)
     this.setAnimationDuration(this.animationDuration)
     this.setSectionColors(this.colors)
+    this.#subscribeToMousewheel()
+
+    this.resetTransform()
   }
 
   addNavigation = () => {
@@ -57,6 +60,7 @@ export default class Slider {
         event.preventDefault()
 
         this.#animateScroll(index)
+
         this.#updateActiveClass(index)
       })
     })
@@ -83,27 +87,42 @@ export default class Slider {
     this.onScrollCallbacks[event] = callback
   }
 
+  wheelEvent = (event) => {
+    let curTime = new Date().getTime();
+
+    let timeDiff = curTime - this.prevTime;
+    this.prevTime = curTime;
+
+    console.log(curTime, this.prevTime, timeDiff)
+
+    if (timeDiff < 300) {
+      event.preventDefault()
+      return
+    }
+
+    console.log('called wheel event', this.canScroll)
+    if(!this.canScroll) {
+      return
+    }
+
+    this.canScroll = false
+
+    if (event.deltaY > 0) {
+      if(this.activeSectionIndex < this.sections.length -1) {
+        this.activeSectionIndex += 1;
+      }
+    } else {
+      if(this.activeSectionIndex > 0) {
+        this.activeSectionIndex -= 1;
+      }
+    }
+
+    this.#animateScroll(this.activeSectionIndex)
+    this.#updateActiveClass(this.activeSectionIndex)
+  }
+
   #subscribeToMousewheel = () => {
-    window.addEventListener('wheel', (event) => {
-      if(!this.canScroll) {
-        return
-      }
-
-      this.canScroll = false
-
-      if (event.deltaY > 0) {
-        if(this.activeSectionIndex < this.sections.length -1) {
-          this.activeSectionIndex += 1;
-        }
-      } else {
-        if(this.activeSectionIndex > 0) {
-          this.activeSectionIndex -= 1;
-        }
-      }
-
-      this.#animateScroll(this.activeSectionIndex)
-      this.#updateActiveClass(this.activeSectionIndex)
-    })
+    window.addEventListener('wheel', (event) => this.wheelEvent(event))
   }
 
   #animateScroll = (count) => {
@@ -113,9 +132,11 @@ export default class Slider {
 
     this.activeSectionIndex = count
     this.content.style.transform = `translateY(-${count * 100}vh)`
+    console.log('start animate', this.canScroll)
 
     setTimeout(() => {
       this.canScroll = true
+      console.log('end setTimeout', this.canScroll)
 
       if (this.onScrollCallbacks.end) {
         this.onScrollCallbacks.end()
@@ -128,5 +149,19 @@ export default class Slider {
 
     dots.forEach((dot) => dot.classList.remove('dots__item_is-active'))
     dots[numberOfSection].classList.add('dots__item_is-active')
+  }
+
+  resetTransform = () => {
+    setTimeout(()=>{
+      this.content.style.transitionDuration = null
+      this.content.style.transform = `translateY(-${this.sections.length*100}vh)`
+      setTimeout(() => {
+        this.content.style.transitionDuration = null
+        this.content.style.transform = 'translateY(0)'
+        setTimeout(()=>{
+          this.setAnimationDuration(this.animationDuration)
+        }, 30)
+      }, 30);
+    }, 30);
   }
 }

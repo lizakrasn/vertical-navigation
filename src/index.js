@@ -9,7 +9,7 @@ const slider = new Slider({
   sectionColors: ['#FFD700', '#8FBC8F', '#FF7F50', '#00BFFF', '#FFB6C1'],
 })
 
-slider.goToSection(1)
+// slider.goToSection(1)
 
 const addPopUp = () => {
   const popUp = document.createElement('div')
